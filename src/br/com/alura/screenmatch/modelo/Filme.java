@@ -1,62 +1,38 @@
 package br.com.alura.screenmatch.modelo;
 
-public class Filme {
+import br.com.alura.screenmatch.calculos.Classificavel;
 
-    private String nome;
-    private int anoDeLancamento;
-    private boolean incluidoNoPlano;
-    private double somaDasAvaliacoes;
-    private int totalDeAvaliacoes;
-    private int duracaoEmMinutos;
+public class Filme extends Titulo implements Classificavel {
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    private String diretor;
+
+    public Filme(String nome, String diretor, int anoDeLancamento){
+        super(nome, anoDeLancamento);
+        this.setDiretor(diretor);
     }
 
-    public String getNome() {
-        return nome;
+    public String getDiretor() {
+        return diretor;
     }
 
-    public void setAnoDeLancamento(int anoDeLancamento) {
-        this.anoDeLancamento = anoDeLancamento;
+    public void setDiretor(String diretor) {
+        this.diretor = diretor;
     }
 
-    public int getAnoDeLancamento() {
-        return anoDeLancamento;
+    @Override
+    public int getClassificacao() {
+        return (int) pegaMedia() / 2;
     }
 
-    public void setDuracaoEmMinutos(int duracaoEmMinutos) {
-        this.duracaoEmMinutos = duracaoEmMinutos;
-    }
-
-    public int getDuracaoEmMinutos() {
-        return duracaoEmMinutos;
-    }
-
-    public int getTotalDeAvaliacoes(){
-        return totalDeAvaliacoes;
-    }
-
-    public void setIncluidoNoPlano(boolean incluidoNoPlano) {
-        this.incluidoNoPlano = incluidoNoPlano;
-    }
-
-    public boolean isIncluidoNoPlano() {
-        return incluidoNoPlano;
-    }
-
+    @Override
     public void exibeFichaTecnica(){
-        System.out.println("Nome do br.com.alura.screenmatch.modelo.Filme: " + nome);
-        System.out.println("Ano de Lançamento: " + anoDeLancamento);
+        System.out.println("Nome do Filme: " + super.getNome());
+        super.exibeFichaTecnica();
     }
 
-    public void avalia(double avaliacao){
-        somaDasAvaliacoes += avaliacao;
-        totalDeAvaliacoes++;
-    }
-
-    public double pegaMedia(){
-        return somaDasAvaliacoes / totalDeAvaliacoes;
+    @Override
+    public String toString() {
+        return "Filme: " + super.getNome() + " (" + super.getAnoDeLancamento() + ") de " + this.getDiretor();
     }
 
 }

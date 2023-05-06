@@ -1,70 +1,83 @@
 package br.com.alura.screenmatch.modelo;
 
+import br.com.alura.screenmatch.excecao.ErroDeConversaoDeAnoException;
+
 public class Titulo implements Comparable<Titulo> {
 
     private String nome;
     private int anoDeLancamento;
-    private boolean incluidoNoPlano;
-    private double somaDasAvaliacoes;
-    private int totalDeAvaliacoes;
-    private int duracaoEmMinutos;
+    private String metascore;
+    private String duracao;
+    private String genero;
+    private String paisDeOrigem;
+    private String classificacao;
 
-    public Titulo(String nome, int anoDeLancamento) {
-        this.nome = nome;
-        this.anoDeLancamento = anoDeLancamento;
+    public Titulo(TituloOMDB meuTituloOMDB) {
+
+        this.nome = meuTituloOMDB.title();
+
+        if (meuTituloOMDB.year().length() > 4){
+            throw new ErroDeConversaoDeAnoException("Não foi possível converter o ano. O valor possui mais de 4 caracteres.");
+        }
+
+        this.anoDeLancamento = Integer.valueOf(meuTituloOMDB.year());
+        this.metascore = meuTituloOMDB.metascore();
+        this.duracao = meuTituloOMDB.runtime();
+        this.genero = meuTituloOMDB.genre();
+        this.paisDeOrigem = meuTituloOMDB.country();
+        this.classificacao = meuTituloOMDB.rated();
+
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public Titulo(String nome, int anoDeLancamento) {
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setAnoDeLancamento(int anoDeLancamento) {
-        this.anoDeLancamento = anoDeLancamento;
-    }
-
     public int getAnoDeLancamento() {
         return anoDeLancamento;
     }
 
-    public void setDuracaoEmMinutos(int duracaoEmMinutos) {
-        this.duracaoEmMinutos = duracaoEmMinutos;
+    public String getMetascore() {
+        return metascore;
     }
 
-    public int getDuracaoEmMinutos() {
-        return duracaoEmMinutos;
+    public String getDuracao() {
+        return duracao;
     }
 
-    public int getTotalDeAvaliacoes(){
-        return totalDeAvaliacoes;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setIncluidoNoPlano(boolean incluidoNoPlano) {
-        this.incluidoNoPlano = incluidoNoPlano;
+    public String getPaisDeOrigem() {
+        return paisDeOrigem;
     }
 
-    public boolean isIncluidoNoPlano() {
-        return incluidoNoPlano;
+    public String getClassificacao() {
+        return classificacao;
     }
 
-    public void exibeFichaTecnica(){
-        System.out.println("Ano de Lançamento: " + anoDeLancamento);
-    }
+    public String exibeFichaTecnica() {
+        return "Título: " + this.nome + "\n" +
+               "Ano de Lançamento: " + this.anoDeLancamento + "\n" +
+               "Gênero: " + this.genero + "\n" +
+               "Duração: " + this.duracao + "\n" +
+               "País: " + this.paisDeOrigem + "\n" +
+               "Classificação Indicativa: " + this.classificacao + "\n" +
+               "Avaliação no Metascore: " + this.metascore;
 
-    public void avalia(double avaliacao){
-        somaDasAvaliacoes += avaliacao;
-        totalDeAvaliacoes++;
-    }
-
-    public double pegaMedia(){
-        return somaDasAvaliacoes / totalDeAvaliacoes;
     }
 
     @Override
     public int compareTo(Titulo outroTitulo) {
         return this.getNome().compareTo(outroTitulo.getNome());
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (" + anoDeLancamento + ")";
     }
 }
